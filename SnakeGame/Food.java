@@ -1,5 +1,6 @@
 package SnakeGame;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class Food {
@@ -10,11 +11,18 @@ public class Food {
         this.coord = coord;
     }
 
-    public static Food generateFood(int N) {
+    public static Food generateFood(int N, HashMap<Coordinate, Boolean> snakeBody) {
         Random r = new Random();
-        int x = r.nextInt(N);
-        int y = r.nextInt(N);
-        return new Food(new Coordinate(x, y));
+        Coordinate coord;
+        int tries = N*N;
+        do {
+            tries--;
+            if(tries<0) {
+                return null;
+            }
+            coord = new Coordinate(r.nextInt(N), r.nextInt(N));
+        } while (snakeBody.containsKey(coord));
+        return new Food(coord);
     }
 
     public Coordinate getCoord() {
